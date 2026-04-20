@@ -8,8 +8,8 @@ if (!START_URL) {
   process.exit(1);
 }
 
-function installReadonlyGuard(page) {
-  page.route('**/*', async (route) => {
+function installReadonlyGuard(context) {
+  context.route('**/*', async (route) => {
     const method = route.request().method().toUpperCase();
     if (['GET', 'HEAD', 'OPTIONS'].includes(method)) {
       return route.continue();
@@ -21,10 +21,13 @@ function installReadonlyGuard(page) {
 
 (async () => {
   const browser = await chromium.launch({ headless: false });
-  const context = await browser.newContext({ storageState: AUTH_FILE });
+  const context = await browser.newContext({
+    storageState: AUTH_FILE,
+    serviceWorkers: 'block',
+  });
+  await installReadonlyGuard(context);
   const page = await context.newPage();
 
-  await installReadonlyGuard(page);
   await page.goto(START_URL, { waitUntil: 'networkidle' });
 
   const title = await page.title();
