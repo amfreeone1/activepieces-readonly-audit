@@ -1,0 +1,15 @@
+{
+  "name": "activepieces-readonly-audit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Minimal read-only Activepieces audit tool using Playwright.",
+  "type": "commonjs",
+  "scripts": {
+    "save-auth": "node save-auth.js",
+    "audit": "node audit-readonly.js",
+    "capture": "node capture-audit.js"
+  },
+  "dependencies": {
+    "playwright": "^1.54.2"
+  }
+}
